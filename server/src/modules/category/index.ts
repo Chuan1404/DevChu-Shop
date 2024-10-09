@@ -7,7 +7,7 @@ import { listCategory } from "./infras/list";
 import { Sequelize } from "sequelize";
 import { init } from "./infras/repository/dto";
 
-export const setUpCategoryModule = (sequelize: Sequelize) => {
+export const setUpCategoryModule = (sequelize: Sequelize): Router => {
   init(sequelize);
 
   const router = Router();
