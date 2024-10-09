@@ -1,17 +1,23 @@
 import dotenv from "dotenv";
 import express from "express";
 import { setUpCategoryModule } from "./modules/category";
+import { sequelize } from "./share/component/sequelize";
 
 dotenv.config();
 
-const app = express();
-const PORT = process.env.PORT || 3001;
+(async () => {
+  await sequelize.authenticate();
+  console.log("Connection has been established successfully");
 
-// middlewares
-app.use(express.json());
+  const app = express();
+  const PORT = process.env.PORT || 3001;
 
-app.use("/", setUpCategoryModule())
+  // middlewares
+  app.use(express.json());
 
-app.listen(PORT, () => {
-  console.log(`Server run at port ${PORT}`);
-});
+  app.use("/", setUpCategoryModule(sequelize));
+
+  app.listen(PORT, () => {
+    console.log(`Server run at port ${PORT}`);
+  });
+})();

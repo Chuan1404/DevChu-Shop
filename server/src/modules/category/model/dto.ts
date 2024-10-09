@@ -13,7 +13,8 @@ export const CategoryUpdateSchema = z.object({
   image: z.string().optional(),
   description: z
     .string()
-    .max(255, "descriptions must be at most 255 characters"),
+    .max(255, "descriptions must be at most 255 characters")
+    .optional(),
   parent_id: z.string().optional(),
   status: z.nativeEnum(CategoryStatus).optional(),
 });

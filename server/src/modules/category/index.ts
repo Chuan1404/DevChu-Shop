@@ -4,8 +4,12 @@ import { createCategory } from "./infras/create";
 import { updateCategory } from "./infras/update";
 import { deleteCategory } from "./infras/delete";
 import { listCategory } from "./infras/list";
+import { Sequelize } from "sequelize";
+import { init } from "./infras/repository/dto";
 
-export const setUpCategoryModule = () => {
+export const setUpCategoryModule = (sequelize: Sequelize) => {
+  init(sequelize);
+
   const router = Router();
 
   router.get("/categories", listCategory);
