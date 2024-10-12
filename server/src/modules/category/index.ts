@@ -27,17 +27,17 @@ import { MySQLCategoryRepository } from "./infras/repository/repo";
 export const setUpCategoryModule = (sequelize: Sequelize): Router => {
   init(sequelize);
 
-  const repository = new MySQLCategoryRepository(sequelize, modelName)
-  const usecase = new CategoryUseCase(repository)
-  const httpService = new CategoryHttpService(usecase)
+  const repository = new MySQLCategoryRepository(sequelize, modelName);
+  const usecase = new CategoryUseCase(repository);
+  const httpService = new CategoryHttpService(usecase);
 
   const router = Router();
 
-  router.get("/categories", listCategory);
-  router.get("/categories/:id", getCategory);
-  router.post("/categories", httpService.create);
-  router.patch("/categories/:id", updateCategory);
-  router.delete("/categories/:id", deleteCategory);
+  router.get("/categories", httpService.list.bind(httpService));
+  router.get("/categories/:id", httpService.get.bind(httpService));
+  router.post("/categories", httpService.create.bind(httpService));
+  router.patch("/categories/:id", httpService.update.bind(httpService));
+  router.delete("/categories/:id", httpService.delete.bind(httpService));
 
   return router;
 };
