@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { CategoryUpdateSchema } from "../model/dto";
 import { CategoryPersistence } from "./repository/dto";
-import { CategoryStatus } from "../model/model";
+import { Model } from "sequelize";
+import { ModelStatus } from "../../../share/model/baseModel";
 
 export const updateCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -16,7 +17,7 @@ export const updateCategory = async (req: Request, res: Response) => {
 
   const category = await CategoryPersistence.findByPk(id);
 
-  if (!category || category.status == CategoryStatus.Deleted) {
+  if (!category || category.status == ModelStatus.DELETED) {
     res.status(400).json({
       error: "Category not found",
     });

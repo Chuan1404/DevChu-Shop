@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { Op } from "sequelize";
 import { PagingDTOSchema } from "../../../share/model/paging";
-import { CategoryStatus } from "../model/model";
 import { CategoryPersistence } from "./repository/dto";
+import { ModelStatus } from "../../../share/model/baseModel";
 
 export const listCategory = async (req: Request, res: Response) => {
   const { success, data, error } = PagingDTOSchema.safeParse(req.query);
@@ -22,7 +22,7 @@ export const listCategory = async (req: Request, res: Response) => {
     order: [["id", "DESC"]],
     where: {
       status: {
-        [Op.ne]: CategoryStatus.Deleted,
+        [Op.ne]: ModelStatus.DELETED,
       },
     },
   });

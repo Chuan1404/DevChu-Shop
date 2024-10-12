@@ -4,11 +4,11 @@ import { Category } from "../model/model";
 
 export interface IQueryRepository {
   get(id: string): Promise<void>;
-  list(cond: CategoryCondDTO, paging: PagingDTO): Promise<void>;
+  list(cond: CategoryCondDTO, paging: PagingDTO): Promise<Category[] | null>;
 }
 
 export interface ICommandRepository {
-  insert(data: Category): Promise<void>;
+  insert(data: Category): Promise<boolean>;
   update(id: string, data: CategoryUpdateDTO): Promise<boolean>;
   delete(id: string): Promise<boolean>;
 }
