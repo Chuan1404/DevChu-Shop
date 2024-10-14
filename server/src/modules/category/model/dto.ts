@@ -20,7 +20,7 @@ export const CategoryUpdateSchema = z.object({
 });
 
 export const CategoryCondDTOScheme = z.object({
-  name: z.string().min(3, "Name must be at least 3 characters").optional(),
+  name: z.string().optional(),
   parent_id: z.string().optional(),
   status: z.nativeEnum(ModelStatus).optional(),
 })

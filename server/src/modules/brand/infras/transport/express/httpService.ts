@@ -1,34 +1,28 @@
 import { Request, Response } from "express";
-import { PagingDTOSchema } from "../../../../share/model/paging";
-import { ICategoryUseCase } from "../../interface";
-import {
-  CategoryCondDTOScheme,
-  CategoryCreateDTO,
-  CategoryCreateSchema,
-  CategoryUpdateSchema,
-} from "../../model/dto";
-import { ZodError } from "zod";
-import { ErrCategoryNameTooShort } from "../../model/err";
+import { IBrandUseCase } from "../../../interface";
+import { PagingDTOSchema } from "../../../../../share/model/paging";
+import { BrandCondScheme } from "../../../model/dto";
 
-export class CategoryHttpService {
-  constructor(private readonly useCase: ICategoryUseCase) {}
+export class BrandHttpService {
+  constructor(private readonly useCase: IBrandUseCase) {}
 
   async create(req: Request, res: Response) {
     try {
       const result = await this.useCase.create(req.body);
       res.status(201).json({ data: result });
     } catch (error) {
-      res.status(400).json({ error });
+      console.log(error)
+      res.status(400).json({ error: (error as Error).message });
     }
   }
 
   async get(req: Request, res: Response) {
     const { id } = req.params;
 
-    let category = await this.useCase.get(id);
+    let brand = await this.useCase.get(id);
 
     res.status(200).json({
-      data: category,
+      data: brand,
     });
   }
 
@@ -40,7 +34,7 @@ export class CategoryHttpService {
         data: id,
       });
     } catch (error) {
-      res.status(400).json({ error });
+      res.status(400).json({ error: (error as Error).message });
     }
   }
 
@@ -58,7 +52,7 @@ export class CategoryHttpService {
       return;
     }
 
-    let cond = CategoryCondDTOScheme.parse(req.query);
+    let cond = BrandCondScheme.parse(req.query);
     let result = await this.useCase.list(cond, paging);
 
     res.status(200).json({

@@ -1,35 +1,31 @@
 import { Router } from "express";
-import { getCategory } from "./infras/get";
-import { createCategory } from "./infras/create";
-import { updateCategory } from "./infras/update";
-import { deleteCategory } from "./infras/delete";
-import { listCategory } from "./infras/list";
 import { Sequelize } from "sequelize";
 import { init, modelName } from "./infras/repository/dto";
-import { CategoryHttpService } from "./infras/transport/httpService";
-import { CategoryUseCase } from "./usecase";
-import { MySQLCategoryRepository } from "./infras/repository/repo";
-
-// export const setUpCategoryModule = (sequelize: Sequelize): Router => {
-//   init(sequelize);
-
-//   const router = Router();
-
-//   router.get("/categories", listCategory);
-//   router.get("/categories/:id", getCategory);
-//   router.post("/categories", createCategory);
-//   router.patch("/categories/:id", updateCategory);
-//   router.delete("/categories/:id", deleteCategory);
-
-//   return router;
-// };
+import { MySQLCategoryRepository } from "./infras/repository";
+import { CategoryHttpService } from "./infras/transport/express/httpService";
+import { CreateCmdHandler } from "./usecase/createCmdHandler";
+import { UpdateCmdHandler } from "./usecase/updateCmdHandler";
+import { DeleteCmdHandler } from "./usecase/deleteCmdHandler";
+import { GetQueryHandler } from "./usecase/getQueryHandler";
+import { ListQueryHandler } from "./usecase/listQueryHandler";
 
 export const setUpCategoryModule = (sequelize: Sequelize): Router => {
   init(sequelize);
 
   const repository = new MySQLCategoryRepository(sequelize, modelName);
-  const usecase = new CategoryUseCase(repository);
-  const httpService = new CategoryHttpService(usecase);
+
+  const createCommand = new CreateCmdHandler(repository);
+  const updateCommand = new UpdateCmdHandler(repository);
+  const deleteCommand = new DeleteCmdHandler(repository);
+  const getQuery = new GetQueryHandler(repository);
+  const listQuery = new ListQueryHandler(repository);
+  const httpService = new CategoryHttpService(
+    listQuery,
+    getQuery,
+    createCommand,
+    updateCommand,
+    deleteCommand
+  );
 
   const router = Router();
 
