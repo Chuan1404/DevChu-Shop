@@ -3,6 +3,7 @@ import express from "express";
 import { setUpCategoryModule } from "./modules/category";
 import { sequelize } from "./share/component/sequelize";
 import { setUpBrandModule } from "./modules/brand";
+import { setUpProductModule } from "./modules/product";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ dotenv.config();
 
   app.use("/", setUpCategoryModule(sequelize));
   app.use("/", setUpBrandModule(sequelize));
+  app.use("/", setUpProductModule(sequelize));
 
   app.listen(PORT, () => {
     console.log(`Server run at port ${PORT}`);
